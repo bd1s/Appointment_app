@@ -26,35 +26,66 @@ router.post('/register', (req, res) => {
   });
 });
 
+// router.post('/login', (req, res) => {
+//   const { email, mdp } = req.body;
+//   const sql = 'SELECT * FROM utilisateurs WHERE email = ?';
+//   connection.query(sql, [email], (err, result) => {
+//     if (err) {
+//       console.error(err);
+//       res.status(500).send('Erreur lors de la récupération de l\'utilisateur');
+//     } else {
+//       if (result.length === 0) {
+//         res.status(401).send('Utilisateur non trouvé');
+//       } else {
+//         const user = result[0];
+//         bcrypt.compare(mdp, user.mdp, (err, same) => {
+//           if (err) {
+//             console.error(err);
+//             res.status(500).send('Erreur lors de la comparaison des mots de passe');
+//           } else {
+//             if (same) {
+//               const token = jwt.sign({ email: user.email }, 'hS1245@');
+//               res.status(200).json({ token , user_id: user.id});
+//             } else {
+//               res.status(401).send('Mot de passe incorrect');
+//             }
+//           }
+//         });
+//       }
+//     }
+//   });
+// });
+
 router.post('/login', (req, res) => {
   const { email, mdp } = req.body;
   const sql = 'SELECT * FROM utilisateurs WHERE email = ?';
   connection.query(sql, [email], (err, result) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Erreur lors de la récupération de l\'utilisateur');
-    } else {
-      if (result.length === 0) {
-        res.status(401).send('Utilisateur non trouvé');
+      if (err) {
+          console.error(err);
+          res.status(500).send('Erreur lors de la récupération de l\'utilisateur');
       } else {
-        const user = result[0];
-        bcrypt.compare(mdp, user.mdp, (err, same) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send('Erreur lors de la comparaison des mots de passe');
+          if (result.length === 0) {
+              res.status(401).send('Email ou mot de passe incorrect');
           } else {
-            if (same) {
-              const token = jwt.sign({ email: user.email }, 'hS1245@');
-              res.status(200).json({ token , user_id: user.id});
-            } else {
-              res.status(401).send('Mot de passe incorrect');
-            }
+              const user = result[0];
+              bcrypt.compare(mdp, user.mdp, (err, same) => {
+                  if (err) {
+                      console.error(err);
+                      res.status(500).send('Erreur lors de la comparaison des mots de passe');
+                  } else {
+                      if (same) {
+                          const token = jwt.sign({ email: user.email }, 'hS1245@');
+                          res.status(200).json({ token, user_id: user.id });
+                      } else {
+                          res.status(401).send('Email ou mot de passe incorrect');
+                      }
+                  }
+              });
           }
-        });
       }
-    }
   });
 });
+
 
 // Endpoint pour obtenir tous les utilisateurs
 router.get('/all', (req, res) => {

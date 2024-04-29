@@ -9,7 +9,7 @@ export default function RegisterScreen({ navigation }) {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('https://a4c0-105-66-134-72.ngrok-free.app/Utilisateurs/register', {
+      const response = await axios.post('https://aef2-105-67-128-195.ngrok-free.app/Utilisateurs/register', {
         email: email,
         mdp: password,
         nom: name,

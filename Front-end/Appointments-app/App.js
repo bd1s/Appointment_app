@@ -8,6 +8,7 @@ import TimeslotsScreen from './composantes/TimeslotsScreen';
 import AppointmentForm from './composantes/AppointmentForm';
 import HomeScreen from './composantes/HomeScreen';
 import Myappointments from './composantes/Myappointments'; // Ajoutez l'import
+import ConfirmationScreen from './composantes/ConfirmationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +22,9 @@ function App() {
         <Stack.Screen name="Centers" component={CentersScreen} options={{ title: 'Centres de Santé' }} />
         <Stack.Screen name="Timeslots" component={TimeslotsScreen} options={{ title: 'Créneaux Disponibles' }} />
         <Stack.Screen name="AppointmentForm" component={AppointmentForm} options={{ title: 'Reservation' }} />
-        <Stack.Screen name="Myappointments" component={Myappointments} options={{ title: 'Mes Rendez-vous' }} /> 
+        <Stack.Screen name="Myappointments" component={Myappointments} options={{ title: 'Mes Rendez-vous' }} />
+        <Stack.Screen name="ConfirmationScreen" component={ConfirmationScreen} options={{ title: 'ConfirmationScreen' }} /> 
+ 
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -12,7 +12,7 @@ export default function TimeslotsScreen({ route, navigation }) {
   useEffect(() => {
     const fetchTimeslots = async () => {
       try {
-        const response = await axios.get(`https://a4c0-105-66-134-72.ngrok-free.app/appointments/timeslots/${center_id}`);
+        const response = await axios.get(`https://aef2-105-67-128-195.ngrok-free.app/appointments/timeslots/${center_id}`);
         setTimeslots(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des créneaux:', error);
