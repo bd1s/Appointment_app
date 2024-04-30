@@ -508,7 +508,7 @@ export default function AppointmentForm({ route, navigation }) {
     try {
       const formattedDate = formatDate(date);
 
-      const response = await axios.post('https://aef2-105-67-128-195.ngrok-free.app/appointments/appointments', {
+      const response = await axios.post('https://af00-102-52-136-247.ngrok-free.app/appointments/appointments', {
         center_id: center_id,
         timeslot_id: timeslot_id,
         user_id: user_id,

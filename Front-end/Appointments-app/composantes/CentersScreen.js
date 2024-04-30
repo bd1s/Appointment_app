@@ -86,6 +86,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
+import Footer from './Footer';
 
 export default function CentersScreen({ navigation ,route}) {
   const [centers, setCenters] = useState([]);
@@ -96,7 +97,7 @@ export default function CentersScreen({ navigation ,route}) {
   useEffect(() => {
     const fetchCenters = async () => {
       try {
-        const response = await axios.get('https://aef2-105-67-128-195.ngrok-free.app/appointments/centers');
+        const response = await axios.get('https://af00-102-52-136-247.ngrok-free.app/appointments/centers');
         setCenters(response.data);
         setFilteredCenters(response.data);
       } catch (error) {
@@ -138,6 +139,8 @@ export default function CentersScreen({ navigation ,route}) {
           </TouchableOpacity>
         )}
       />
+            <Footer navigation={navigation} user_id={route.params.user_id} />
+
     </View>
   );
 }

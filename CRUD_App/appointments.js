@@ -283,6 +283,62 @@ router.get('/timeslots/:center_id', (req, res) => {
   });
 });
 
+
+router.get('/blood-requests', (req, res) => {
+  console.log("Requête GET pour obtenir toutes les demandes de don de sang approuvées");
+  connection.query(`
+    SELECT
+      id,
+      nom_demandeur,
+      groupe_sanguin,
+      date_demande,
+      contact_demandeur,
+      ville_demandeur,
+      commentaire,
+      hopital_du_demandeur,
+      adresse_hopital_du_demandeur
+    FROM
+      demandes_don_sang
+    WHERE
+      status = 'Approuvée'
+    ORDER BY
+      date_demande DESC
+  `, (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des demandes de don de sang:', err);
+      res.status(500).send('Erreur lors de la récupération des demandes de don de sang');
+      return;
+    }
+    console.log('Demandes de don de sang approuvées récupérées avec succès :', results);
+    res.status(200).json(results);
+  });
+});
+
+
+
+// Endpoint pour ajouter une demande de don de sang
+router.post('/add-blood-request', (req, res) => {
+  const { nom_demandeur, groupe_sanguin, date_demande, contact_demandeur, ville_demandeur, commentaire, hopital_du_demandeur, adresse_hopital_du_demandeur } = req.body;
+
+  // Vérification des données obligatoires
+  if (!nom_demandeur || !groupe_sanguin || !date_demande || !contact_demandeur || !ville_demandeur || !hopital_du_demandeur || !adresse_hopital_du_demandeur) {
+    return res.status(400).json({ message: 'Veuillez fournir toutes les informations nécessaires.' });
+  }
+
+  // Insertion de la demande de don de sang dans la base de données
+  connection.query('INSERT INTO demandes_don_sang (nom_demandeur, groupe_sanguin, date_demande, contact_demandeur, ville_demandeur, commentaire, hopital_du_demandeur, adresse_hopital_du_demandeur) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
+    [nom_demandeur, groupe_sanguin, date_demande, contact_demandeur, ville_demandeur, commentaire, hopital_du_demandeur, adresse_hopital_du_demandeur], 
+    (err, result) => {
+      if (err) {
+        console.error('Erreur lors de l\'ajout de la demande de don de sang:', err);
+        return res.status(500).json({ message: 'Erreur lors de l\'ajout de la demande de don de sang.' });
+      }
+      console.log('Demande de don de sang ajoutée avec succès.');
+      res.status(201).json({ message: 'Demande de don de sang ajoutée avec succès.' });
+    }
+  );
+});
+
 // Fonction pour prendre un rendez-vous
 router.post('/appointments', (req, res) => {
   const { user_id, center_id, timeslot_id, date, name, email, phone_number } = req.body;
@@ -366,6 +422,7 @@ router.post('/appointments', (req, res) => {
     }
   });
 });
+
 
 
 module.exports = router;

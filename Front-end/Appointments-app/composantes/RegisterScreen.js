@@ -6,13 +6,19 @@ export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [prenom, setPrenom] = useState('');
+  const [tele, setTele] = useState(''); // Ajout du state pour le numéro de téléphone
+
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('https://aef2-105-67-128-195.ngrok-free.app/Utilisateurs/register', {
+      const response = await axios.post('https://af00-102-52-136-247.ngrok-free.app/Utilisateurs/register', {
         email: email,
         mdp: password,
         nom: name,
+        prenom: prenom, // Passage du prénom dans la requête de création de compte
+        tele: tele // Passage du numéro de téléphone dans la requête de création de compte
+
       });
       alert('Inscription réussie!');
       navigation.navigate('Login');
@@ -28,6 +34,20 @@ export default function RegisterScreen({ navigation }) {
         style={styles.input}
         value={name}
         onChangeText={setName}
+      />
+      <Text>Prénom:</Text> 
+      <TextInput
+        style={styles.input}
+        value={prenom}
+        onChangeText={setPrenom}
+      />
+      
+      <Text>Téléphone:</Text> 
+      <TextInput
+        style={styles.input}
+        value={tele}
+        onChangeText={setTele}
+        keyboardType="phone-pad" // Utilisation du clavier numérique pour les numéros de téléphone
       />
       <Text>Email:</Text>
       <TextInput
