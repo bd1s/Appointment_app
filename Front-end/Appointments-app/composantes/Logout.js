@@ -1,10 +1,8 @@
-// logout.js
-
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
 
 // Fonction de déconnexion
-export const logout = async () => {
+export const Logout = async ({ navigation }) => {
   try {
     // Afficher une boîte de dialogue de confirmation
     Alert.alert(
@@ -18,6 +16,9 @@ export const logout = async () => {
             // Supprimer le jeton d'authentification stocké localement
             await AsyncStorage.removeItem('authToken');
             console.log('User logged out successfully');
+            // Naviguer vers l'écran de connexion
+            navigation.navigate('Login');
+
           },
         },
       ],

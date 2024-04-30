@@ -1,19 +1,20 @@
-// Header.js
-
 import React from 'react';
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { logout } from './logout ';
+import { useNavigation } from '@react-navigation/native'; // Importez useNavigation depuis @react-navigation/native
+import { Logout } from './Logout';
 const Header = () => {
+  const navigation = useNavigation(); // Utilisez useNavigation pour obtenir l'objet de navigation
+
   const handleLogout = () => {
-    logout(); // Appel de la fonction logout lorsque l'utilisateur clique sur l'icône de déconnexion
+    Logout({ navigation }); // Passez navigation en tant que paramètre à la fonction Logout
   };
 
   return (
     <View style={styles.header}>
       {/* Logo de l'application à l'extrémité gauche */}
       <Image
-        source={require('./path/to/your/logo.png')}
+        source={require('../assets/image1.jpeg')}
         style={styles.logo}
       />
       {/* Icône de déconnexion à l'extrémité droite */}
