@@ -238,13 +238,15 @@ export default function Myappointments({ route, navigation }) {
       <Text>Date: {item.date}</Text>
       <Text>Centre: {item.center_nom}</Text>
       <Text>Adresse: {item.adresse}</Text>
-      <Text>Heure de début: {item.heure_debut}</Text>
-      <Text>Heure de fin: {item.heure_fin}</Text>
+      <Text>Heure : {item.heure_debut}</Text>
+      <Text>Ordre : {item.ordre}</Text>
+
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Vos rendez-vous </Text>
       {loading ? (
         <Text style={styles.loading}>Chargement des rendez-vous...</Text>
       ) : appointments.length === 0 ? (
@@ -254,12 +256,14 @@ export default function Myappointments({ route, navigation }) {
           data={appointments}
           keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
           renderItem={renderItem}
+          keyboardShouldPersistTaps="handled" // Cette propriété permet au clavier de gérer les taps
+          contentContainerStyle={{ paddingBottom: 80 }} // Ajoutez un padding en bas égal à la hauteur du footer
         />
       )}
       <Footer navigation={navigation} user_id={route.params.user_id} />
-
     </View>
   );
+  
 }
 
 const styles = StyleSheet.create({
@@ -268,10 +272,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   item: {
-    backgroundColor: '#f9c2ff',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    backgroundColor: '#FCCAD3',
+    borderRadius: 10,
+  },
+  title: {
+    fontSize: 23,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 50,
+    color: "#9C1941",
   },
   loading: {
     fontSize: 18,
@@ -282,7 +295,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     marginTop: 10,
-    color: 'red', // Ajoutez d'autres styles au besoin
+    color: 'red',
     fontWeight: 'bold',
   },
 });

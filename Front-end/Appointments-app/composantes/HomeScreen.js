@@ -68,78 +68,90 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import { View, Text, FlatList, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import Carousel from 'react-native-snap-carousel';
 import Footer from './Footer';
 import Header from './Header';
-
+import ajouter from '../assets/ajouter.png';
 
 const HomeScreen = ({ navigation, route }) => {
   const { user_id } = route.params;
+  const screenWidth = Dimensions.get('window').width;
 
-  // State for carousel images
   const images = [
-    { id: 1, source: require('../assets/image1.jpeg') },
-    { id: 2, source: require('../assets/image2.png') },
-    { id: 3, source: require('../assets/image3.jpg') },
+    { id: 1, source: require('../assets/1.jpg') },
+    { id: 2, source: require('../assets/2.jpg') },
+    { id: 3, source: require('../assets/3.jpg') },
+    { id: 4, source: require('../assets/4.jpg') },
   ];
 
-  // State for blood requests
   const [bloodRequests, setBloodRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Function to fetch blood requests from the backend
   const fetchBloodRequests = async () => {
     try {
       const response = await fetch('https://af00-102-52-136-247.ngrok-free.app/appointments/blood-requests');
       const data = await response.json();
-      const formattedData = data.map(item => ({
-        ...item,
-        date_demande: item.date_demande.split('T')[0] // Keep only the date part
-      }));
-      setBloodRequests(formattedData);
-      setLoading(false); // Set loading to false once requests are fetched
+      setBloodRequests(data);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching blood requests:', error);
     }
   };
 
   useEffect(() => {
-    // Fetch blood requests when the component mounts or when it comes into focus
-    const reloadBloodRequests = navigation.addListener('focus', fetchBloodRequests);
-    
-    // Clean up the listener when the component unmounts
-    return reloadBloodRequests;
+    const unsubscribe = navigation.addListener('focus', fetchBloodRequests);
+    return unsubscribe;
   }, [navigation]);
 
-  // Render function for carousel items
   const renderImageItem = ({ item }) => (
     <Image source={item.source} style={styles.image} />
   );
 
-  // Render function for blood requests
-  const renderBloodRequestItem = ({ item }) => (
-    <View style={styles.requestItem}>
-      <Text style={styles.requestText}>{item.commentaire}</Text>
-      <Text style={styles.requestText}>Groupe sanguin : {item.groupe_sanguin}</Text>
-      <Text style={styles.requestText}>Adresse de hopital : {item.adresse_hopital_du_demandeur}</Text>
-      <Text style={styles.requestText}>Contact : {item.contact_demandeur}</Text>
-      <Text style={styles.requestText}>{item.date_demande}</Text>
-    </View>
-  );
+  const renderBloodRequestItem = ({ item }) => {
+    const requestDate = new Date(item.date_demande);
+    const formattedDate = `${requestDate.getFullYear()}-${(requestDate.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${requestDate.getDate().toString().padStart(2, '0')}`;
+
+    return (
+      <View style={styles.requestItem}>
+        <View style={styles.detailRow}>
+          <Text style={styles.title}>{item.commentaire}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <FontAwesome name="tint" size={16} color="#5f5f5f" />
+          <Text style={styles.requestText}>Groupe sanguin : {item.groupe_sanguin}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <FontAwesome name="hospital-o" size={12} color="#5f5f5f" />
+          <Text style={styles.requestText}>Adresse : {item.adresse_hopital_du_demandeur}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <FontAwesome name="phone" size={16} color="#5f5f5f" />
+          <Text style={styles.requestText}>Contact : {item.contact_demandeur}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <FontAwesome name="clock-o" size={16} color="#5f5f5f" />
+          <Text style={styles.requestText}>Date de demande : {formattedDate}</Text>
+        </View>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
-     <Header />
+      <Header />
       <Carousel
         data={images}
         renderItem={renderImageItem}
-        sliderWidth={300}
-        itemWidth={300}
+        sliderWidth={screenWidth}
+        itemWidth={screenWidth}
         autoplay={true}
-        autoplayDelay={500}
-        autoplayInterval={3000}
+        autoplayDelay={100}
+        autoplayInterval={1000}
+        loop={true}
       />
       <FlatList
         data={bloodRequests}
@@ -147,20 +159,13 @@ const HomeScreen = ({ navigation, route }) => {
         keyExtractor={item => item.id.toString()}
         contentContainerStyle={styles.listContainer}
       />
-      <Footer navigation={navigation} user_id={route.params.user_id} />
-
-      {/* <View style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Centers', { user_id })}>
-          <FontAwesome name="hospital-o" size={30} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('AddRequestScreen', { user_id })}>
-          <FontAwesome name="plus-circle" size={30} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Myappointments', { user_id })}>
-          <FontAwesome name="calendar" size={30} color="black" />
-        </TouchableOpacity>
-
-      </View> */}
+      {/* Bouton flottant "plus" pour ajouter une demande */}
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddRequestScreen', { user_id })}>
+        <Image source={ajouter} style={styles.icon} />
+      </TouchableOpacity>
+      <View style={styles.footer}>
+        <Footer navigation={navigation} user_id={route.params.user_id} />
+      </View>
     </View>
   );
 };
@@ -168,33 +173,71 @@ const HomeScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    
+  },
+  icon: {
+    width: 30, // Largeur de l'image
+    height: 30, // Hauteur de l'image
   },
   image: {
-    width: 300,
+    width: '100%',
     height: 200,
   },
   listContainer: {
     width: '100%',
+    paddingHorizontal: 10,
+    marginTop: 20,
+  
   },
   requestItem: {
-    padding: 10,
+    backgroundColor: '#FCCAD3',
+    borderRadius: 10,
+    padding: 15,
     marginVertical: 5,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#ddd',
+    width: '100%',
   },
   requestText: {
+    marginLeft: 10,
     fontSize: 16,
   },
-  footer: {
+  detailRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
     alignItems: 'center',
-    marginTop: 20,
-    width: '100%',
+    marginBottom: 5,
+  },
+  addButton: {
+    position: 'absolute',
+    bottom: 80,
+    right: 20,
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: "#9C1941",
   },
 });
 

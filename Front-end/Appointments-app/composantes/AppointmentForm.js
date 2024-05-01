@@ -548,15 +548,16 @@ export default function AppointmentForm({ route, navigation }) {
   };
 
   return (
+
     <View style={styles.container}>
-      <Text>Nom:</Text>
+      <Text style={styles.title1}>Réservation</Text>
+
       <TextInput
         style={styles.input}
         value={name}
         onChangeText={setName}
         placeholder="Entrez votre nom"
       />
-      <Text>Email:</Text>
       <TextInput
         style={styles.input}
         value={email}
@@ -564,7 +565,6 @@ export default function AppointmentForm({ route, navigation }) {
         placeholder="Entrez votre email"
         keyboardType="email-address"
       />
-      <Text>Numéro de téléphone:</Text>
       <TextInput
         style={styles.input}
         value={phoneNumber}
@@ -572,7 +572,6 @@ export default function AppointmentForm({ route, navigation }) {
         placeholder="Entrez votre numéro de téléphone"
         keyboardType="phone-pad"
       />
-      <Text>Date:</Text>
       <TouchableOpacity style={styles.dateInput} onPress={showDatepicker}>
         <TextInput
           style={{ flex: 1 }}
@@ -607,6 +606,8 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     padding: 10,
     marginBottom: 10,
+    borderRadius: 10,
+
   },
   dateInput: {
     borderWidth: 1,
@@ -615,16 +616,28 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: 10,
+
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#9C1941',
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 20,
     alignItems: 'center',
+    marginBottom: 20,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  title1: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    marginTop:10,
+    color:"#9C1941",
+    textAlign: 'center', // Centrer le titre horizontalement
+
   },
 });
 

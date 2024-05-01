@@ -218,6 +218,7 @@ router.get('/appointments/user/:user_id', (req, res) => {
       rendez_vous.email AS email, 
       rendez_vous.phone_number AS phone_number,
       rendez_vous.status AS status,
+      rendez_vous.ordre AS ordre, 
       centres_sante.nom AS center_nom, 
       centres_sante.adresse AS adresse, 
       creneaux.heure_debut AS heure_debut, 
@@ -239,6 +240,7 @@ router.get('/appointments/user/:user_id', (req, res) => {
     res.status(200).json(results);
   });
 });
+
 
 
 // Endpoint pour annuler un rendez-vous
@@ -375,6 +377,8 @@ router.post('/appointments', (req, res) => {
         }
 
         const totalAppointments = countResults[0].total;
+        const order = totalAppointments + 1; // Increment by 1 to get the next order
+
 
         // Get the maximum capacity of the center
         connection.query('SELECT capacite FROM centres_sante WHERE id = ?', [center_id], (err, capResults) => {
@@ -396,7 +400,7 @@ router.post('/appointments', (req, res) => {
           let status = totalAppointments < capaciteMaximale ? 'validé' : 'en attente';
 
           // Insert the appointment with the determined status
-          connection.query('INSERT INTO rendez_vous (user_id, center_id, status, timeslot_id, date, name, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [user_id, center_id, status, timeslot_id, date, name, email, phone_number], (err, insertResult) => {
+          connection.query('INSERT INTO rendez_vous (user_id, center_id, status, timeslot_id, date, name, email, phone_number, ordre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [user_id, center_id, status, timeslot_id, date, name, email, phone_number, order], (err, insertResult) => {
             if (err) {
               console.error('Erreur lors de la prise de rendez-vous:', err);
               res.status(500).send('Erreur lors de la prise de rendez-vous');

@@ -303,7 +303,9 @@ const AddRequestScreen = ({ navigation ,route}) => {
         placeholder="Adresse de l'hôpital du demandeur"
       />
       {errors.adresse_hopital_du_demandeur !== '' && <Text style={styles.error}>{errors.adresse_hopital_du_demandeur}</Text>}
-      <Button title="Soumettre" onPress={handleSubmit} />
+      <Button
+  title="Soumettre"
+  onPress={handleSubmit} color="#9C1941" style={styles.submitButton}/>
     </ScrollView>
   );
 };
@@ -315,6 +317,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
       },
+    
       infoText: {
         marginBottom: 20,
         fontSize: 12,
@@ -327,6 +330,8 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
+        marginTop:50,
+        color:"#9C1941",
       },
   input: {
     width: '100%',
@@ -335,8 +340,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
+    borderRadius: 20,
+
   },
   dateInput: {
+
     width: '100%',
     borderWidth: 1,
     borderColor: '#ccc',
@@ -345,6 +353,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: 10,
+
   },
   error: {
     textAlign: 'left',
