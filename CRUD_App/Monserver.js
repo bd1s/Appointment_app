@@ -2,9 +2,9 @@ const express = require('express');
 
 require('dotenv').config();
 const app = express();
-const Utilisateurs = require('./Utilisateurs'); // Importe les routes utilisateur
+const Utilisateurs = require('./Utilisateurs'); 
 app.use(express.json());
-app.use('/Utilisateurs', Utilisateurs); // Utilise les routes utilisateur
+app.use('/Utilisateurs', Utilisateurs); 
 
 const appointments = require('./appointments');
 app.use('/appointments', appointments);

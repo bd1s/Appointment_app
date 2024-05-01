@@ -18,7 +18,7 @@ const ResetPasswordScreen = () => {
     };
 
     return (
-        <View>
+        <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder='Entrez votre e-mail'
@@ -33,18 +33,29 @@ const ResetPasswordScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        marginBottom: 10,
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f5f5f5',
+        paddingHorizontal: 20,
     },
-    button: {
-        backgroundColor: '#007bff',
+    input: {
         padding: 15,
         borderRadius: 5,
+        marginBottom: 20,
+        width: '100%',
+        backgroundColor: '#fff',
+        borderRadius: 20,
+
+    },
+
+    button: {
+        backgroundColor: '#9C1941',
+        padding: 15,
+        borderRadius: 20,
         alignItems: 'center',
-        marginBottom: 10,
+        width: '100%',
     },
     buttonText: {
         color: '#fff',

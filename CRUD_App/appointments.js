@@ -243,7 +243,7 @@ router.get('/appointments/user/:user_id', (req, res) => {
 
 
 
-// Endpoint pour annuler un rendez-vous
+// Endpoint annuler Rdv
 router.delete('/appointments/:id', (req, res) => {
   const appointmentId = req.params.id;
 

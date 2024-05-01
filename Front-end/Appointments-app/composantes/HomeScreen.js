@@ -70,21 +70,21 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import Carousel from 'react-native-snap-carousel';
 import Footer from './Footer';
 import Header from './Header';
 import ajouter from '../assets/ajouter.png';
+import ImageSlider from './ImageSlider';
 
 const HomeScreen = ({ navigation, route }) => {
   const { user_id } = route.params;
-  const screenWidth = Dimensions.get('window').width;
+  // const screenWidth = Dimensions.get('window').width;
 
-  const images = [
-    { id: 1, source: require('../assets/1.jpg') },
-    { id: 2, source: require('../assets/2.jpg') },
-    { id: 3, source: require('../assets/3.jpg') },
-    { id: 4, source: require('../assets/4.jpg') },
-  ];
+  // const images = [
+  //   { id: 1, source: require('../assets/1.jpg') },
+  //   { id: 2, source: require('../assets/2.jpg') },
+  //   { id: 3, source: require('../assets/3.jpg') },
+  //   { id: 4, source: require('../assets/4.jpg') },
+  // ];
 
   const [bloodRequests, setBloodRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -105,9 +105,9 @@ const HomeScreen = ({ navigation, route }) => {
     return unsubscribe;
   }, [navigation]);
 
-  const renderImageItem = ({ item }) => (
-    <Image source={item.source} style={styles.image} />
-  );
+  // const renderImageItem = ({ item }) => (
+  //   <Image source={item.source} style={styles.image} />
+  // );
 
   const renderBloodRequestItem = ({ item }) => {
     const requestDate = new Date(item.date_demande);
@@ -143,16 +143,7 @@ const HomeScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Header />
-      <Carousel
-        data={images}
-        renderItem={renderImageItem}
-        sliderWidth={screenWidth}
-        itemWidth={screenWidth}
-        autoplay={true}
-        autoplayDelay={100}
-        autoplayInterval={1000}
-        loop={true}
-      />
+      <ImageSlider />
       <FlatList
         data={bloodRequests}
         renderItem={renderBloodRequestItem}

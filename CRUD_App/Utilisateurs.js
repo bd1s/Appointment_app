@@ -112,6 +112,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer'); // Import de nodemailer pour l'envoi d'e-mails
 
+
+
 router.post('/register', (req, res) => {
   const { nom, prenom, email, mdp, tele } = req.body;
   bcrypt.hash(mdp, 10, (err, hash) => {
@@ -132,6 +134,7 @@ router.post('/register', (req, res) => {
     }
   });
 });
+
 
 router.post('/login', (req, res) => {
   const { email, mdp } = req.body;
